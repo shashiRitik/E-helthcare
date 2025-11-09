@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Hide n8n chatbot footer in all pages */
+.n8n-chat-footer,
+.chat-footer,
+div[class*="footer"],
+.n8n-chat-wrapper footer {
+  display: none !important;
+}
+

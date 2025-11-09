@@ -1,10 +1,43 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { Users, UserCheck, Stethoscope, Building, Calendar, FileText, DollarSign, Activity, Plus, Eye, CreditCard as Edit, Trash2, BarChart3, Settings, Shield, AlertTriangle } from 'lucide-react';
+
+import { Users, UserCheck, Stethoscope, Building, Calendar, FileText, DollarSign, Activity, Plus, Eye, CreditCard as Edit, Trash2, BarChart3, Settings, Shield, AlertTriangle, X, EyeOff, AlertCircle, UserPlus, Signal } from 'lucide-react';
+
+
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
+  // Add User Modal States
+const [showForm, setShowForm] = useState(false);
+const [formData, setFormData] = useState({
+  role: 'patient',
+  first_name: '',
+  last_name: '',
+  email: '',
+  phone: '',
+  specialization: '',
+  employeeId: '',
+  department: '',
+  password: '',
+  confirmPassword: '',
+});
+const [showPassword, setShowPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState('');
+const { signup } = useAuth();
+
+const handleFormSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+  // Basic validation
+  if (formData.password !== formData.confirmPassword) {
+    setError('Passwords do not match');
+    return;
+  }
+  setError('');
+  signup(formData)
+}
 
   // Mock data
   const stats = {
@@ -296,10 +329,223 @@ const AdminDashboard: React.FC = () => {
             {/* Add User Button */}
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-medium text-gray-900">User Management</h3>
-              <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center">
-                <Plus className="h-4 w-4 mr-2" />
-                Add User
-              </button>
+   <button
+  onClick={() => setShowForm(true)}
+  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center"
+>
+  <Plus className="h-4 w-4 mr-2" />
+  Add User
+</button>
+{/* === Add User Popup === */}
+{showForm && (
+  <>
+    {/* Overlay */}
+    <div
+      className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-300 z-40"
+      onClick={() => setShowForm(false)}
+    ></div>
+
+    {/* Popup Form */}
+   {/* Centered Popup Form */}
+<div className="fixed inset-0 flex items-center justify-center z-50">
+  <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 overflow-y-auto max-h-[90vh] transform transition-all duration-300 scale-100 animate-fadeIn">
+      {/* Header */}
+      <div className="flex justify-between items-center border-b p-5">
+        <h2 className="text-xl font-semibold text-gray-900">Register New User</h2>
+        <button
+          onClick={() => setShowForm(false)}
+          className="text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <X className="h-6 w-6" />
+        </button>
+      </div>
+
+      {/* Form */}
+      <div className="p-6">
+        {error && (
+          <div className="mb-4 bg-red-50 border border-red-200 p-3 rounded-md flex items-center text-red-700">
+            <AlertCircle className="h-5 w-5 mr-2" /> {error}
+          </div>
+        )}
+
+        <form
+          onSubmit={handleFormSubmit}
+          className="space-y-5"
+        >
+          {/* Role */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Account Type</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value })
+              }
+              className="mt-2 w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+            >
+              <option value="patient">Patient</option>
+              <option value="doctor">Doctor</option>
+              <option value="staff">Hospital Staff</option>
+            </select>
+          </div>
+
+          {/* Name */}
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              name="first_name"
+              placeholder="First Name"
+              value={formData.first_name}
+              onChange={(e) =>
+                setFormData({ ...formData, first_name: e.target.value })
+              }
+              required
+              className="rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+            />
+            <input
+              name="last_name"
+              placeholder="Last Name"
+              value={formData.last_name}
+              onChange={(e) =>
+                setFormData({ ...formData, last_name: e.target.value })
+              }
+              required
+              className="rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            required
+            className="w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+          />
+
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={formData.phone}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
+            className="w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+          />
+
+          {/* Conditional Fields */}
+          {formData.role === 'doctor' && (
+            <input
+              type="text"
+              name="specialization"
+              placeholder="Specialization"
+              value={formData.specialization}
+              onChange={(e) =>
+                setFormData({ ...formData, specialization: e.target.value })
+              }
+              required
+              className="w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+            />
+          )}
+
+          {formData.role === 'staff' && (
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                name="employeeId"
+                placeholder="Employee ID"
+                value={formData.employeeId}
+                onChange={(e) =>
+                  setFormData({ ...formData, employeeId: e.target.value })
+                }
+                required
+                className="rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+              />
+              <input
+                name="department"
+                placeholder="Department"
+                value={formData.department}
+                onChange={(e) =>
+                  setFormData({ ...formData, department: e.target.value })
+                }
+                className="rounded-md border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+          )}
+
+          {/* Password */}
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+              className="w-full rounded-md border-gray-300 py-2 px-3 pr-10 shadow-sm focus:ring-2 focus:ring-blue-600"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-2.5"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
+          </div>
+
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+              required
+              className="w-full rounded-md border-gray-300 py-2 px-3 pr-10 shadow-sm focus:ring-2 focus:ring-blue-600"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-2 top-2.5"
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full flex justify-center items-center bg-blue-600 text-white rounded-md py-2.5 font-semibold hover:bg-blue-500 transition"
+          >
+            {loading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            ) : (
+              <>
+                <UserPlus className="h-4 w-4 mr-2"  />
+                Create Account
+              </>
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
+    </div>
+  </>
+)}
+
+
             </div>
 
             {/* Users Table */}

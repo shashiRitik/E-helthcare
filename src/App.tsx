@@ -1,4 +1,5 @@
 import React from 'react';
+import N8nChatbot from './components/common/N8nChatbot';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/common/Layout';
@@ -16,6 +17,8 @@ import AdminDashboard from './pages/dashboard/AdminDashboard';
 function App() {
   return (
     <AuthProvider>
+      {/* 👇 Global n8n Chatbot (Available on all pages) */}
+      <N8nChatbot />
       <Router>
         <Routes>
           {/* Public routes with navbar and footer */}

@@ -5,16 +5,13 @@ import { Heart, UserPlus, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     confirmPassword: '',
     phone: '',
-    role: 'patient' as 'patient' | 'doctor' | 'staff',
-    specialization: '',
-    department: '',
-    employeeId: ''
+    role: 'patient' as 'patient',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -51,21 +48,14 @@ const Signup: React.FC = () => {
 
     try {
       await signup(formData);
-      
+
       // Redirect to role-specific dashboard
-      switch (formData.role) {
-        case 'patient':
-          navigate('/patient/dashboard', { replace: true });
-          break;
-        case 'doctor':
-          navigate('/doctor/dashboard', { replace: true });
-          break;
-        case 'staff':
-          navigate('/staff/dashboard', { replace: true });
-          break;
-        default:
-          navigate('/', { replace: true });
+      if(formData.role === 'patient') {
+        navigate('/patient/dashboard', { replace: true });
       }
+
+      else  navigate('/', { replace: true });
+
     } catch (err) {
       setError('An error occurred during signup. Please try again.');
     } finally {
@@ -103,25 +93,20 @@ const Signup: React.FC = () => {
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Role Selection */}
-            <div>
-              <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">
-                Account Type
-              </label>
-              <div className="mt-2">
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors"
-                >
-                  <option value="patient">Patient</option>
-                  <option value="doctor">Doctor</option>
-                  <option value="staff">Hospital Staff</option>
-                </select>
-              </div>
-            </div>
+        <div>
+ 
+  <div className="mt-2">
+    <input
+      id="role"
+      name="role"
+      type="text"
+      value="Patient"
+      disabled
+      className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 bg-gray-100 cursor-not-allowed"
+    />
+  </div>
+</div>
+
 
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
@@ -131,10 +116,10 @@ const Signup: React.FC = () => {
                 </label>
                 <input
                   id="firstName"
-                  name="firstName"
+                  name="first_name"
                   type="text"
                   required
-                  value={formData.firstName}
+                  value={formData.first_name}
                   onChange={handleChange}
                   className="mt-2 block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors"
                   placeholder="First name"
@@ -145,11 +130,11 @@ const Signup: React.FC = () => {
                   Last Name
                 </label>
                 <input
-                  id="lastName"
-                  name="lastName"
+                  id="last_name"
+                  name="last_name"
                   type="text"
                   required
-                  value={formData.lastName}
+                  value={formData.last_name}
                   onChange={handleChange}
                   className="mt-2 block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors"
                   placeholder="Last name"
@@ -192,7 +177,7 @@ const Signup: React.FC = () => {
             </div>
 
             {/* Role-specific fields */}
-            {formData.role === 'doctor' && (
+            {/* {formData.role === 'doctor' && (
               <div>
                 <label htmlFor="specialization" className="block text-sm font-medium leading-6 text-gray-900">
                   Specialization
@@ -242,7 +227,7 @@ const Signup: React.FC = () => {
                   />
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Password */}
             <div>
@@ -327,8 +312,8 @@ const Signup: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <Link 
-                to="/auth/login" 
+              <Link
+                to="/auth/login"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Sign in here
