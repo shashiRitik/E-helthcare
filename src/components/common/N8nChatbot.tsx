@@ -9,7 +9,7 @@ const N8nChatbot = () => {
         );
 
         Chatbot.init({
-          n8nChatUrl: "http://localhost:5678/webhook/1b3a54c0-ca1e-42bc-8556-8ef16bc85f2c/chat",
+          n8nChatUrl: "https://eheathcare.digitalsaulation.com/n8n/webhook/1b3a54c0-ca1e-42bc-8556-8ef16bc85f2c/chat",
           metadata: {
             userId: "doctor-bot-user",
             source: "react-ts-app",
