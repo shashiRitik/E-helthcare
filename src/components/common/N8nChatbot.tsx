@@ -33,7 +33,7 @@ const N8nChatbot = () => {
             },
             tooltip: {
               showTooltip: true,
-              tooltipMessage: "Hello 👋 Dr. 👩‍⚕️",
+              tooltipMessage: "Hello👋 Dr.👩‍⚕️",
               tooltipBackgroundColor: "#fff9f6",
               tooltipTextColor: "#d82c2c",
               tooltipFontSize: 15,
@@ -43,7 +43,7 @@ const N8nChatbot = () => {
               avatarBorderRadius: 25,
               messageBorderRadius: 6,
               showTitle: true,
-              title: "Dr.👩‍⚕️ Chat Bot",
+              title: "Dr.👩‍⚕️Sasi",
               titleAvatarSrc:
                 "https://www.svgrepo.com/show/429210/doctor-healthcare-hospital.svg",
               avatarSize: 40,

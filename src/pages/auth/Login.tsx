@@ -165,19 +165,10 @@ const Login: React.FC = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm leading-6">
-                <span className="bg-white px-6 text-gray-500">Demo Credentials</span>
+                <span className="bg-white px-6 text-gray-500"></span>
               </div>
             </div>
 
-            <div className="mt-6 space-y-2 text-sm">
-              <div className="bg-gray-50 p-3 rounded-md">
-                <p><strong>Patient:</strong> patient@demo.com</p>
-                <p><strong>Doctor:</strong> doctor@demo.com</p>
-                <p><strong>Staff:</strong> staff@demo.com</p>
-                <p><strong>Admin:</strong> admin@demo.com</p>
-                <p><strong>Password:</strong> demo123</p>
-              </div>
-            </div>
           </div>
 
           <div className="mt-6 text-center">
